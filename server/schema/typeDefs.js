@@ -1,20 +1,47 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type User {
-    _id: ID
+    _id: ID!
     username: String
     email: String
+    usertype: Usertype
+  }
+
+  enum Usertype {
+    Vendor
+    Customer
   }
 
   type Vendor {
-    _id: ID
+    _id: ID!
     name: String
-    email: String
     location: String
-    services: String
     description: String
-    cost: Float
+    services: [Service]
+  }
+
+  type Customer {
+    _id: ID!
+    name: String
+    location: String
+    preferedVendors: [Vendor]
+    savedExperiences: [SavedService]
+  }
+
+  type SavedService {
+    _id: ID!
+    vendor: Vendor
+    service: Service
+  }
+
+  type Service {
+    _id: ID!
+    name: String
+    description: String
+    price: Float
+    duration: Int
+    category: String
   }
 
   type Auth {
@@ -23,17 +50,37 @@ const typeDefs = gql`
   }
 
   type Query {
+    getUsers: [User]
     getUserById(userId: ID!): User
     me: User
+    getVendorsLocations: [String]
+    getCustomers: [Customer!]!
     getVendors: [Vendor!]!
-    getVendorsLocations: [String!]!
   }
 
   type Mutation {
-    createUser(username: String!, email: String!, password: String!): Auth
+    createUser(
+      username: String!
+      email: String!
+      password: String!
+      usertype: Usertype!
+    ): Auth
+
+    addingInfoVendor(location: String, description: String): Vendor
+
+    addingInfoCustomer(location: String): Customer
+
+    createService(
+      name: String!
+      description: String
+      price: Float
+      duration: Int
+      category: String
+    ): Vendor
+
+    saveService(serviceId: ID!): Customer
     login(email: String!, password: String!): Auth
   }
 `;
 
 module.exports = typeDefs;
-
