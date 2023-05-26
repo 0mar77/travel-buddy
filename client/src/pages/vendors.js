@@ -1,6 +1,6 @@
-import React from 'react';
-import { useQuery } from '@apollo/client';
-import { GET_VENDORS } from '../utils/queries';
+import React from "react";
+import { useQuery } from "@apollo/client";
+import { GET_VENDORS } from "../utils/queries";
 
 const VendorList = () => {
   const { loading, data } = useQuery(GET_VENDORS);
@@ -17,11 +17,11 @@ const VendorList = () => {
       {vendors.map((vendor) => (
         <div key={vendor._id}>
           <h3>{vendor.name}</h3>
-          <p>Email: {vendor.email}</p>
           <p>Location: {vendor.location}</p>
-          <p>Services: {vendor.services}</p>
           <p>Description: {vendor.description}</p>
-          <p>Cost: {vendor.cost}</p>
+          {vendor.services.map((service) => (
+            <p>Service: {service}</p>
+          ))}
         </div>
       ))}
     </div>

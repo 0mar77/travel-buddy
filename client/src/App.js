@@ -1,25 +1,29 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import SignupForm from './components/SignupForm';
-import LoginForm from './components/LoginForm';
-import VendorList from './pages/vendors'; // Add this line
+import React from "react";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+import Navbar from "./components/Navbar";
+// import SignupForm from "./components/SignupForm";
+// import LoginForm from "./components/LoginForm";
+import VendorList from "./pages/vendors"; // Add this line
+import AddVendorService from "./pages/extras";
 
 const httpLink = createHttpLink({
-  uri: '/graphql',
+  uri: "/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
-  // Get the authentication token from local storage if it exists
-  const token = localStorage.getItem('id_token');
-  // Return the headers to the context so HTTP link can read them
+  const token = localStorage.getItem("id_token");
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${token}` : "",
     },
   };
 });
@@ -36,8 +40,13 @@ function App() {
         <>
           <Navbar />
           <Routes>
-            <Route path="/vendors" element={<VendorList />} /> {/* Add this line */}
-            <Route path="*" element={<h1 className="display-2">Wrong page!</h1>} />
+            <Route path="/vendors" element={<VendorList />} />{" "}
+            <Route path="/extras" element={<AddVendorService />} />{" "}
+            {/* Add this line */}
+            <Route
+              path="*"
+              element={<h1 className="display-2">Wrong page!</h1>}
+            />
           </Routes>
         </>
       </Router>
@@ -46,5 +55,3 @@ function App() {
 }
 
 export default App;
-
-

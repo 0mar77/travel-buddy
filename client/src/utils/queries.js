@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_ME = gql`
   query me {
@@ -6,6 +6,7 @@ export const GET_ME = gql`
       _id
       username
       email
+      usertype
     }
   }
 `;
@@ -16,6 +17,50 @@ export const GET_USER_BY_ID = gql`
       _id
       username
       email
+      usertype
+    }
+  }
+`;
+
+export const GET_USERS = gql`
+  query getUsers {
+    getUsers {
+      _id
+      username
+      email
+      usertype
+    }
+  }
+`;
+
+export const GET_CUSTOMERS = gql`
+  query getCustomers {
+    getCustomers {
+      _id
+      name
+      location
+      preferedVendors {
+        _id
+        name
+        location
+        description
+      }
+      savedExperiences {
+        _id
+        service {
+          _id
+          name
+          description
+          price
+          duration
+          category
+          images
+        }
+        vendor {
+          _id
+          name
+        }
+      }
     }
   }
 `;
@@ -25,11 +70,17 @@ export const GET_VENDORS = gql`
     getVendors {
       _id
       name
-      email
       location
-      services
       description
-      cost
+      services {
+        _id
+        name
+        description
+        price
+        duration
+        category
+        images
+      }
     }
   }
 `;
