@@ -1,3 +1,18 @@
+/* index.css */
+
+/* Reset body margin and padding */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Set root element to fill the viewport */
+#root {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Other global styles */
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
