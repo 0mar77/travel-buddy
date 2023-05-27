@@ -9,10 +9,9 @@ import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
-// import SignupForm from "./components/SignupForm";
-// import LoginForm from "./components/LoginForm";
-import VendorList from "./pages/vendors"; // Add this line
-import AddVendorService from "./pages/extras";
+import VendorList from "./pages/vendors";
+import Profile from "./pages/Profile";
+import MyServices from "./pages/MyServices";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -40,13 +39,9 @@ function App() {
         <>
           <Navbar />
           <Routes>
-            <Route path="/vendors" element={<VendorList />} />{" "}
-            <Route path="/extras" element={<AddVendorService />} />{" "}
-            {/* Add this line */}
-            <Route
-              path="*"
-              element={<h1 className="display-2">Wrong page!</h1>}
-            />
+            <Route path="*" element={<VendorList />} />{" "}
+            <Route path="/myservices/:profileId" element={<MyServices />} />{" "}
+            <Route path="/profiles/:profileId" element={<Profile />} />{" "}
           </Routes>
         </>
       </Router>

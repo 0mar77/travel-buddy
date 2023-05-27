@@ -4,11 +4,17 @@ import { Navbar, Nav, Container, Modal, Tab } from "react-bootstrap";
 import SignUpForm from "./SignupForm";
 import LoginForm from "./LoginForm";
 import Auth from "../utils/auth";
-import VendorList from "../pages/vendors";
+
+import { useQuery } from "@apollo/client";
+import { GET_ME } from "../utils/queries.js";
 
 const AppNavbar = () => {
   // set modal display state
   const [showModal, setShowModal] = useState(false);
+
+  const { data } = useQuery(GET_ME);
+  const userData = data?.me || {};
+  // console.log(userData);
 
   return (
     <>
@@ -28,9 +34,18 @@ const AppNavbar = () => {
               {/* Show login/signup or logout based on user authentication */}
               {Auth.loggedIn() ? (
                 <>
-                  <Nav.Link as={Link} to="/extras">
-                    Extras
+                  <Nav.Link as={Link} to={`/profiles/${userData._id}`}>
+                    {`${userData.usertype}`}'s Profile
                   </Nav.Link>
+
+                  {userData.usertype === "Customer" && (
+                    <>
+                      <Nav.Link as={Link} to={`/myservices/${userData._id}`}>
+                        My Services
+                      </Nav.Link>
+                    </>
+                  )}
+
                   <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
                 </>
               ) : (

@@ -39,26 +39,44 @@ export const GET_CUSTOMERS = gql`
       _id
       name
       location
-      preferedVendors {
-        _id
-        name
-        location
-        description
-      }
       savedExperiences {
         _id
-        service {
-          _id
-          name
-          description
-          price
-          duration
-          category
-          images
-        }
+        name
+        description
+        price
+        duration
+        category
+        images
         vendor {
           _id
           name
+          location
+          description
+        }
+      }
+    }
+  }
+`;
+
+export const GET_CUSTOMER_BY_ID = gql`
+  query getCustomerById($userId: ID!) {
+    getCustomerById(userId: $userId) {
+      _id
+      name
+      location
+      savedExperiences {
+        _id
+        name
+        description
+        price
+        duration
+        category
+        images
+        vendor {
+          _id
+          name
+          location
+          description
         }
       }
     }
@@ -68,6 +86,26 @@ export const GET_CUSTOMERS = gql`
 export const GET_VENDORS = gql`
   query getVendors {
     getVendors {
+      _id
+      name
+      location
+      description
+      services {
+        _id
+        name
+        description
+        price
+        duration
+        category
+        images
+      }
+    }
+  }
+`;
+
+export const GET_VENDOR_BY_ID = gql`
+  query getVendorById($userId: ID!) {
+    getVendorById(userId: $userId) {
       _id
       name
       location

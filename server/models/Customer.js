@@ -13,12 +13,6 @@ const customerSchema = new Schema(
       unique: true,
     },
     location: {},
-    preferedVendors: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Vendor",
-      },
-    ],
     savedExperiences: [
       {
         type: Schema.Types.ObjectId,

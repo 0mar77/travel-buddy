@@ -24,6 +24,11 @@ const servicesSchema = new Schema(
         type: String,
       },
     ],
+    vendor: {
+      type: Schema.Types.ObjectId,
+      ref: "Vendor",
+      required: true,
+    },
   },
   {
     toJSON: {

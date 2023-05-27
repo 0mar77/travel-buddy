@@ -40,6 +40,7 @@ export const ADD_USER = gql`
 
 export const CREATE_SERVICE = gql`
   mutation createService(
+    $vendorId: ID!
     $name: String!
     $description: String
     $price: Float
@@ -47,6 +48,7 @@ export const CREATE_SERVICE = gql`
     $category: String
   ) {
     createService(
+      vendorId: $vendorId
       name: $name
       description: $description
       price: $price
@@ -54,16 +56,17 @@ export const CREATE_SERVICE = gql`
       category: $category
     ) {
       _id
-      location
-      description
       name
+      description
+      location
       services {
         _id
-        category
-        description
-        duration
         name
+        description
         price
+        duration
+        category
+        images
       }
     }
   }
@@ -91,16 +94,57 @@ export const ADD_VENDOR_INFO = gql`
 `;
 
 export const SAVE_SERVICE = gql`
-  mutation ($serviceId: ID!) {
+  mutation saveService($serviceId: ID!) {
     saveService(serviceId: $serviceId) {
       _id
       name
+      location
       savedExperiences {
         _id
+        name
+        description
+        price
+        duration
+        category
+        images
         vendor {
           _id
           name
           location
+          description
+        }
+      }
+    }
+  }
+`;
+
+export const DELETE_SERVICE = gql`
+  mutation deleteService($service: ID!) {
+    deleteService(service: $service) {
+      success
+    }
+  }
+`;
+
+export const UNSAVE_SERVICE = gql`
+  mutation unsaveService($serviceId: ID!) {
+    unsaveService(serviceId: $serviceId) {
+      _id
+      name
+      location
+      savedExperiences {
+        _id
+        name
+        description
+        price
+        duration
+        category
+        images
+        vendor {
+          _id
+          name
+          location
+          description
         }
       }
     }

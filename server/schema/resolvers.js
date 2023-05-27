@@ -52,25 +52,78 @@ const resolvers = {
     // Query all of the vendors
     getCustomers: async () => {
       try {
-        const customers = await Customer.find().populate("user");
+        const customers = await Customer.find().populate({
+          path: "savedExperiences",
+          populate: {
+            path: "vendor",
+            model: "Vendor", // Replace 'Vendor' with the actual name of your Vendor model
+          },
+        });
+        console.log(customers);
         return customers;
       } catch (err) {
         throw new Error("Failed to retrieve all customers");
       }
     },
 
+    getServices: async () => {
+      try {
+        const services = await Service.find().populate("vendor");
+        console.log(services); // Log the services array to inspect its contents
+
+        // Check the value of the _id field in each service
+        for (const service of services) {
+          console.log(service._id);
+        }
+
+        return services;
+      } catch (err) {
+        console.error(err);
+        throw new Error("Failed to retrieve services");
+      }
+    },
+
     // Query all of the vendors
     getVendors: async () => {
       try {
-        const vendors = await Vendor.find();
+        const vendors = await Vendor.find().populate("services");
         return vendors;
       } catch (error) {
         console.log(error);
         throw new Error("Failed to retrieve all vendors");
       }
     },
+    getCustomerById: async (parent, { userId }, context) => {
+      try {
+        let customer;
+        if (userId) {
+          customer = await Customer.findById(userId).populate({
+            path: "savedExperiences",
+            populate: {
+              path: "vendor",
+              model: "Vendor", // Replace 'Vendor' with the actual name of your Vendor model
+            },
+          });
+        }
+        return customer;
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to retrieve customer");
+      }
+    },
+    getVendorById: async (parent, { userId }, context) => {
+      try {
+        let vendor;
+        if (userId) {
+          vendor = await Vendor.findById(userId).populate("services");
+        }
+        return vendor;
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to retrieve vendor");
+      }
+    },
   },
-
   Mutation: {
     // Create a new user
     createUser: async (parent, { username, email, password, usertype }) => {
@@ -119,7 +172,8 @@ const resolvers = {
     // Adding more information to an specific vendor
     addingInfoVendor: async (parent, { location, description }, context) => {
       try {
-        if (context.user && context.user.usertype === "Vendor") {
+        console.log(context);
+        if (context.user) {
           const vendor = await Vendor.findOneAndUpdate(
             { _id: context.user._id },
             { location, description },
@@ -127,9 +181,7 @@ const resolvers = {
           );
           return vendor;
         } else {
-          throw new Error(
-            "You need to be logged in as a vendor to create a service"
-          );
+          throw new Error("You need to be logged in to add info");
         }
       } catch (error) {
         console.error(error);
@@ -139,7 +191,7 @@ const resolvers = {
     // Adding more information to an specific customer
     addingInfoCustomer: async (parent, { location }, context) => {
       try {
-        if (context.user && context.user.usertype === "Customer") {
+        if (context.user) {
           const customer = await Customer.findOneAndUpdate(
             { _id: context.user._id },
             { location },
@@ -147,26 +199,24 @@ const resolvers = {
           );
           return customer;
         } else {
-          throw new Error(
-            "You need to be logged in as a vendor to create a service"
-          );
+          throw new Error("You need to be logged in to create a service");
         }
       } catch (error) {
         console.error(error);
-        throw new Error("Failed to add information to the customer user");
+        throw new Error("Failed to add information in to add info");
       }
     },
     // Create a new Vendor Service
     createService: async (
       parent,
-      { name, description, price, duration, category },
+      { vendorId, name, description, price, duration, category },
       context
     ) => {
       try {
         // Check if the user is authenticated and has a vendor role
-        if (context.user && context.user.usertype === "Vendor") {
+        if (vendorId) {
           // Find the vendor by the user ID
-          const vendor = await Vendor.findOne({ _id: context.user._id });
+          const vendor = await Vendor.findOne({ _id: vendorId });
 
           if (!vendor) {
             throw new Error("Vendor not found");
@@ -179,7 +229,7 @@ const resolvers = {
             price,
             duration,
             category,
-            vendor: vendor._id, // Set the vendor ID for the service
+            vendor: vendor,
           });
 
           await service.save();
@@ -202,29 +252,23 @@ const resolvers = {
     saveService: async (parent, { serviceId }, context) => {
       try {
         // Check if the user is authenticated and has a customer role
-        if (context.user && context.user.usertype === "Customer") {
-          // Find the customer by the user ID
-          const customer = await Customer.findOne({ _id: context.user._id });
-
-          if (!customer) {
-            throw new Error("Customer not found");
-          }
-
+        if (context.user) {
           // Find the service by the service ID
-          const service = await Service.findOne({ _id: serviceId });
-
+          const service = await Service.findById(serviceId).populate("vendor");
           if (!service) {
             throw new Error("Service not found");
           }
 
-          // Add the service to the customer's savedExperiences
-          customer.savedExperiences.push({
-            vendor: service.vendor,
-            service: service._id,
-          });
-          await customer.save();
+          // Find the customer by the user ID
+          const savedService = await Customer.findOneAndUpdate(
+            { _id: context.user._id },
+            {
+              $push: { savedExperiences: service },
+            },
+            { new: true }
+          );
 
-          return service;
+          return savedService;
         } else {
           throw new Error(
             "You need to be logged in as a customer to save a service"
@@ -232,7 +276,50 @@ const resolvers = {
         }
       } catch (error) {
         console.error(error);
-        throw new Error("Failed to save service");
+        throw new Error("Failed to save the service");
+      }
+    },
+    // Unsave Service
+    unsaveService: async (parent, { serviceId }, context) => {
+      try {
+        // Check if the user is authenticated and has a customer role
+        if (context.user) {
+          // Find the service by the service ID
+          // const service = await Service.findById(serviceId).populate("vendor");
+          // if (!service) {
+          //   throw new Error("Service not found");
+          // }
+
+          // Find the customer by the user ID
+          const unsaveService = await Customer.findOneAndUpdate(
+            { _id: context.user._id },
+            {
+              $pull: { savedExperiences: serviceId },
+            },
+            { new: true }
+          );
+
+          return unsaveService;
+        } else {
+          throw new Error(
+            "You need to be logged in as a customer to unsave a service"
+          );
+        }
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to save the service");
+      }
+    },
+    // Deleting a service
+    deleteService: async (parent, { serviceId }) => {
+      try {
+        const service = await Service.findOneAndDelete({ serviceId });
+        if (!service) {
+          throw new AuthenticationError("No service found with this id");
+        }
+        return service;
+      } catch (err) {
+        console.log(err);
       }
     },
     //For an existing user to login and provide a token

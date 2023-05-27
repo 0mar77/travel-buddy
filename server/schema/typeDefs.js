@@ -25,24 +25,18 @@ const typeDefs = gql`
     _id: ID!
     name: String
     location: String
-    preferedVendors: [Vendor]
-    savedExperiences: [SavedService]
-  }
-
-  type SavedService {
-    _id: ID!
-    vendor: Vendor
-    service: Service
+    savedExperiences: [Service]
   }
 
   type Service {
-    _id: ID!
+    _id: ID
     name: String
     description: String
     price: Float
     duration: Int
     category: String
     images: [String]
+    vendor: Vendor
   }
 
   type Auth {
@@ -57,6 +51,13 @@ const typeDefs = gql`
     getVendorsLocations: [String]
     getCustomers: [Customer!]!
     getVendors: [Vendor!]!
+    getCustomerById(userId: ID!): Customer
+    getVendorById(userId: ID!): Vendor
+    getServices: [Service]
+  }
+
+  type DeleteServiceResponse {
+    success: Boolean
   }
 
   type Mutation {
@@ -72,6 +73,7 @@ const typeDefs = gql`
     addingInfoCustomer(location: String): Customer
 
     createService(
+      vendorId: ID!
       name: String!
       description: String
       price: Float
@@ -79,7 +81,10 @@ const typeDefs = gql`
       category: String
     ): Vendor
 
+    deleteService(service: ID!): DeleteServiceResponse
+
     saveService(serviceId: ID!): Customer
+    unsaveService(serviceId: ID!): Customer
     login(email: String!, password: String!): Auth
   }
 `;
