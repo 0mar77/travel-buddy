@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar';
-import Landingpage from './LandingpageSearch';
+import Landingpage from './Landingpage';
 import LoginForm from '../pages/LoginForm';
 import SignupForm from '../pages/SignupForm';
 import Vendors from '../pages/Vendors';
