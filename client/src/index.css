@@ -1,18 +1,21 @@
-/* index.css */
-
-/* Reset body margin and padding */
-body {
-  margin: 0;
-  padding: 0;
-}
-
-/* Set root element to fill the viewport */
-#root {
-  height: 100vh;
-  width: 100vw;
-}
-
-/* Other global styles */
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+body {
+  font-family: 'Rubik', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Rubik Mono One', sans-serif;
+}
+
+.small {
+  font-weight: 300;
+  font-style: italic;
+}
