@@ -3,7 +3,7 @@
     "name": "Francisco Monteon",
     "email": "frank@test.com",
     "location": "Guadalajara",
-    "services": "Tour",
+    "Services": "Tour",
     "description": "I am offering a tour around downdown Guadalajara to cover the Basilica, Plaza de Armas, San Juan de Dios and more!",
     "cost":"500"
   },
@@ -11,7 +11,7 @@
     "name": "Test 2",
     "email": "Test2@test.com",
     "location": "CDMX",
-    "services": "Tour",
+    "Services": "Tour",
     "description": "I am offering a tour around Reforma, Presidente Masaryk and more!",
     "cost":"1000"
   },
@@ -19,7 +19,7 @@
     "name": "Test 3",
     "email": "Test3@test.com",
     "location": "Veracruz",
-    "services": "Bar Hopping",
+    "Services": "Bar Hopping",
     "description": "I am offering a night tour around Veracruz's best known bars at night!",
     "cost":"1500"
   }
