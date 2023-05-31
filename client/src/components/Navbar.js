@@ -19,19 +19,19 @@ const AppNavbar = () => {
   return (
     <>
       <Navbar
-        className="bg-customSections text-customPrimary"
+        className="bg-customSections text-customPrimary p-8"
         variant="dark"
         expand="lg"
       >
         <Container fluid>
-          <Navbar.Brand className="text-customPrimary" as={Link} to="/">
+          <Navbar.Brand className="text-customPrimary text-7xl font-semi-bold" as={Link} to="/">
             Travel Buddy
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbar" />
           <Navbar.Collapse id="navbar" className="d-flex flex-row-reverse">
             <Nav className="ml-auto d-flex">
               {/* Always show the vendors page link */}
-              <Nav.Link className="navTabs" as={Link} to="/vendors">
+              <Nav.Link className="navTabs text-2xl" as={Link} to="/vendors">
                 Vendors
               </Nav.Link>
 
@@ -39,7 +39,7 @@ const AppNavbar = () => {
               {Auth.loggedIn() ? (
                 <>
                   <Nav.Link
-                    className="navTabs"
+                    className="navTabs text-2xl"
                     as={Link}
                     to={`/profiles/${userData._id}`}
                   >
@@ -49,7 +49,7 @@ const AppNavbar = () => {
                   {userData.usertype === 'Customer' && (
                     <>
                       <Nav.Link
-                        className="navTabs"
+                        className="navTabs text-2xl"
                         as={Link}
                         to={`/myservices/${userData._id}`}
                       >
@@ -58,13 +58,13 @@ const AppNavbar = () => {
                     </>
                   )}
 
-                  <Nav.Link className="navTabs" onClick={Auth.logout}>
+                  <Nav.Link className="navTabs text-2xl" onClick={Auth.logout}>
                     Logout
                   </Nav.Link>
                 </>
               ) : (
                 <Nav.Link
-                  className="navTabs"
+                  className="navTabs text-2xl"
                   onClick={() => setShowModal(true)}
                 >
                   Login/Sign Up
