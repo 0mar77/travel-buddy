@@ -19,7 +19,16 @@ const ServiceForm = ({ profileId }) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setService({ ...service, [name]: value });
+
+    setService((prevService) => ({
+      ...prevService,
+      [name]:
+        name === "price"
+          ? parseFloat(value)
+          : name === "duration"
+          ? parseInt(value)
+          : value,
+    }));
   };
 
   const handleFormSubmit = async (event) => {
