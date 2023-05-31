@@ -3,6 +3,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME, GET_VENDORS } from '../utils/queries';
 import { SAVE_SERVICE } from '../utils/mutations';
 import Auth from '../utils/auth';
+import StaticVendor from '../components/Static-Vendors/StaticVendors';
 
 const VendorList = () => {
   const [saveService, { error }] = useMutation(SAVE_SERVICE);
@@ -41,7 +42,8 @@ const VendorList = () => {
 
   return (
     <div className="bg-customBody h-screen p-2">
-      <h1 className="text-customPrimary text-center my-2">Vendors</h1>
+      <h1 className="text-customPrimary text-center  text-5xl my-5">Vendors</h1>
+      {<StaticVendor />}
       {vendors.map((vendor) => (
         <div
           className="border-2 border-customComplementary p-2 my-3 bg-customSections text-customText"
