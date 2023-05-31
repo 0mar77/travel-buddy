@@ -1,28 +1,30 @@
 import React from "react";
+import { Container, Card, Button, Row, Col } from "react-bootstrap";
+
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_ME, GET_VENDORS } from "../utils/queries";
-import { SAVE_SERVICE } from "../utils/mutations";
+import { useParams } from "react-router-dom";
+
 import Auth from "../utils/auth";
 
-const VendorList = () => {
-  const [saveService, { error }] = useMutation(SAVE_SERVICE);
-  const { loading: vendorsLoading, data: vendorsData } = useQuery(GET_VENDORS);
-  const vendors = vendorsData?.getVendors || [];
+import { GET_CUSTOMER_BY_ID } from "../utils/queries";
+import { UNSAVE_SERVICE } from "../utils/mutations";
 
-  let userData = {};
-  const { data: meData } = useQuery(GET_ME, { skip: !Auth.loggedIn() });
-
-  if (Auth.loggedIn()) {
-    userData = meData?.me || {};
+const MyServices = () => {
+  const { profileId } = useParams();
+  const [unsaveService] = useMutation(UNSAVE_SERVICE);
+  const { loading, data } = useQuery(GET_CUSTOMER_BY_ID, {
+    variables: { userId: profileId },
+  });
+  // if data isn't here yet, say so
+  if (loading) {
+    return <h2>LOADING...</h2>;
   }
 
-  if (vendorsLoading) {
-    return <p>Loading vendors...</p>;
-  }
+  //   console.log(profileId);
 
-  const handleSaveService = async (event, serviceId) => {
-    event.preventDefault();
+  const userData = data.getCustomerById;
 
+  const handleDeleteService = async (serviceId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -30,51 +32,55 @@ const VendorList = () => {
     }
 
     try {
-      const data = await saveService({
-        variables: { serviceId: serviceId },
-      });
-      console.log(data);
+      const response = await unsaveService({ variables: { serviceId } });
+      console.log(response);
+      window.location.reload();
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Vendors</h1>
-      {vendors.map((vendor) => (
-        <div key={vendor._id} className="mb-4">
-          <h3 className="text-lg font-semibold">{vendor.name}</h3>
-          <p>Location: {vendor.location}</p>
-          <p>Description: {vendor.description}</p>
-          {userData.usertype === "Customer" && (
-            <>
-              {vendor.services.map((service, index) => (
-                <div key={service._id} className="mt-2">
-                  <p>Service: {service.name}</p>
-                  <button
-                    className="bg-blue-500 text-white px-2 py-1 rounded"
-                    onClick={(event) => handleSaveService(event, service._id)}
-                  >
-                    Save this service
-                  </button>
-                </div>
-              ))}
-            </>
-          )}
-          {userData.usertype !== "Customer" && (
-            <>
-              {vendor.services.map((service, index) => (
-                <div key={service._id} className="mt-2">
-                  <p>Service: {service.name}</p>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-      ))}
-    </div>
+    <>
+      <div fluid className="text-light bg-dark p-5">
+        <Container>
+          <h1>Viewing saved services!</h1>
+        </Container>
+      </div>
+      <Container>
+        <h2>
+          {userData.savedExperiences.length
+            ? `Viewing ${userData.savedExperiences.length} saved ${
+                userData.savedExperiences.length === 1
+                  ? "experience"
+                  : "experiences"
+              }:`
+            : "You have no saved experiences!"}
+        </h2>
+        <Row>
+          {userData.savedExperiences.map((experience) => {
+            return (
+              <Col md="4">
+                <Card key={experience._id} border="dark">
+                  <Card.Body>
+                    <Card.Title>{experience.name}</Card.Title>
+                    <p className="small">Vendor: {experience.vendor.name}</p>
+                    <Card.Text>{experience.description}</Card.Text>
+                    <Button
+                      className="btn-block btn-danger"
+                      onClick={() => handleDeleteService(experience._id)}
+                    >
+                      Delete this Service!
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
+      </Container>
+    </>
   );
 };
 
-export default VendorList;
+export default MyServices;

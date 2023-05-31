@@ -16,6 +16,8 @@ const VendorList = () => {
     userData = meData?.me || {};
   }
 
+  console.log(userData);
+
   if (vendorsLoading) {
     return <p>Loading vendors...</p>;
   }
