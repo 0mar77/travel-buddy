@@ -13,7 +13,6 @@ const CustomerInfo = ({ profileId }) => {
 
   const customer = data.getCustomerById;
 
-  console.log(customer);
 
   return (
     <div className="h-screen w-auto bg-customSections">
