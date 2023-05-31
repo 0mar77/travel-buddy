@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import { useQuery, useMutation } from "@apollo/client";
-import { GET_CUSTOMER_BY_ID } from "../utils/queries";
+import { useQuery, useMutation } from '@apollo/client';
+import { GET_CUSTOMER_BY_ID } from '../utils/queries';
 
 const CustomerInfo = ({ profileId }) => {
   const { loading, data } = useQuery(GET_CUSTOMER_BY_ID, {
@@ -16,11 +16,12 @@ const CustomerInfo = ({ profileId }) => {
   console.log(customer);
 
   return (
-    <div>
-      <div className="flex-row justify-space-between my-4">
-        <h4 className="card-header bg-dark text-light p-2 m-0">
-          {customer.name}'s Location: {customer.location}
-        </h4>
+    <div className="h-screen w-auto bg-customSections">
+      <div className="flex-row justify-space-between my-2 bg-customComplementary">
+        <h3 className="card-header text-customPrimary bg-customComplementary p-2 my-2">
+          {customer.name}'s Location:
+        </h3>
+        <p className="text-customText p-2 my-2">{customer.location}</p>
       </div>
     </div>
   );

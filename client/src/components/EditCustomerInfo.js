@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
 
-import Auth from "../utils/auth";
+import Auth from '../utils/auth';
 
-import { ADD_CUSTOMER_INFO } from "../utils/mutations";
+import { ADD_CUSTOMER_INFO } from '../utils/mutations';
 
 const EditCustomerInfo = ({ profileId }) => {
   const [info, setInfo] = useState({
-    location: "",
+    location: '',
   });
 
   const [updateInfo, { error }] = useMutation(ADD_CUSTOMER_INFO);
@@ -32,7 +32,7 @@ const EditCustomerInfo = ({ profileId }) => {
       });
 
       setInfo({
-        location: "",
+        location: '',
       });
 
       window.location.reload();
@@ -43,13 +43,13 @@ const EditCustomerInfo = ({ profileId }) => {
 
   return (
     <div>
-      <h4>Edit your info</h4>
+      <h4 className='text-customPrimary'>Edit your info</h4>
       <form
         className="flex-row justify-center justify-space-between-md align-center"
         onSubmit={handleFormSubmit}
       >
         <div className="mb-3">
-          <label className="form-label">Location</label>
+          <label className="form-label my-2 text-customText">Location</label>
           <input
             type="text"
             className="form-control"
@@ -60,7 +60,10 @@ const EditCustomerInfo = ({ profileId }) => {
         </div>
 
         <div className="col-12 col-lg-3">
-          <button className="btn btn-info btn-block py-3" type="submit">
+          <button
+            className="btn text-customText hover:bg-customComplementary btn-block py-3 border-2 border-customComplementary"
+            type="submit"
+          >
             Update your info
           </button>
         </div>

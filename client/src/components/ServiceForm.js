@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
 
-import Auth from "../utils/auth";
+import Auth from '../utils/auth';
 
-import { CREATE_SERVICE } from "../utils/mutations";
+import { CREATE_SERVICE } from '../utils/mutations';
 
 const ServiceForm = ({ profileId }) => {
   const [service, setService] = useState({
     vendorId: profileId,
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     price: 0,
     duration: 0,
-    category: "",
+    category: '',
   });
 
   const [addService, { error }] = useMutation(CREATE_SERVICE);
@@ -38,11 +38,11 @@ const ServiceForm = ({ profileId }) => {
 
       setService({
         vendorId: profileId,
-        name: "",
-        description: "",
+        name: '',
+        description: '',
         price: 0,
         duration: 0,
-        category: "",
+        category: '',
       });
       window.location.reload();
     } catch (err) {
@@ -52,7 +52,7 @@ const ServiceForm = ({ profileId }) => {
 
   return (
     <div>
-      <h4>Endorse your service below.</h4>
+      <h4 className="text-customPrimary">Endorse your service below.</h4>
       <form
         className="flex-row justify-center justify-space-between-md align-center"
         onSubmit={handleFormSubmit}
@@ -109,7 +109,10 @@ const ServiceForm = ({ profileId }) => {
         </div>
 
         <div className="col-12 col-lg-3">
-          <button className="btn btn-info btn-block py-3" type="submit">
+          <button
+            className="btn btn-info btn-block py-3 bg-customComplementary border-2 border-customBody"
+            type="submit"
+          >
             Endorse your service
           </button>
         </div>

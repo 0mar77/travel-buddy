@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 
-import { useParams } from "react-router-dom";
-import { useQuery } from "@apollo/client";
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 
-import VendorInfo from "../components/VendorInfo";
-import EditVendorInfo from "../components/EditVendorInfo";
-import ServiceForm from "../components/ServiceForm";
-import CustomerInfo from "../components/CustomerInfo";
-import EditCustomerInfo from "../components/EditCustomerInfo";
+import VendorInfo from '../components/VendorInfo';
+import EditVendorInfo from '../components/EditVendorInfo';
+import ServiceForm from '../components/ServiceForm';
+import CustomerInfo from '../components/CustomerInfo';
+import EditCustomerInfo from '../components/EditCustomerInfo';
 
-import { GET_USER_BY_ID } from "../utils/queries";
+import { GET_USER_BY_ID } from '../utils/queries';
 
 const Profile = () => {
   const { profileId } = useParams();
@@ -26,29 +26,33 @@ const Profile = () => {
 
   console.log(profile);
   return (
-    <div>
-      <h2 className="card-header">{profile.username}'s information</h2>
+    <div className="container bg-customBody p-2">
+      <h2 className="card-header text-customPrimary p-2 ">
+        {profile.username}'s information
+      </h2>
 
       {/* {profile.skills?.length > 0 && <SkillsList skills={profile.skills} />} */}
-      {profile.usertype === "Vendor" && (
+      {profile.usertype === 'Vendor' && (
         <>
-          <div className="my-4 p-4" style={{ border: "1px dotted #1a1a1a" }}>
-            <VendorInfo profileId={profile._id} />
-          </div>
-          <div className="my-4 p-4" style={{ border: "1px dotted #1a1a1a" }}>
-            <EditVendorInfo profileId={profile._id} />
-          </div>
-          <div className="my-4 p-4" style={{ border: "1px dotted #1a1a1a" }}>
-            <ServiceForm profileId={profile._id} />
+          <div className="container flex flex-col">
+            <div className="my-4 p-4 border-2 border-customComplementary w-full bg-customSections text-customText">
+              <VendorInfo profileId={profile._id} />
+            </div>
+            <div className="my-4 p-4 border-2 border-customComplementary w-full bg-customSections text-customText">
+              <EditVendorInfo profileId={profile._id} />
+            </div>
+            <div className="my-4 p-4 border-2 border-customComplementary w-full bg-customSections text-customText">
+              <ServiceForm profileId={profile._id} />
+            </div>
           </div>
         </>
       )}
-      {profile.usertype === "Customer" && (
+      {profile.usertype === 'Customer' && (
         <>
-          <div className="my-4 p-4" style={{ border: "1px dotted #1a1a1a" }}>
+          <div className="my-4 p-4 border-2 border-customComplementary w-full bg-customSections ">
             <CustomerInfo profileId={profile._id} />
           </div>
-          <div className="my-4 p-4" style={{ border: "1px dotted #1a1a1a" }}>
+          <div className="my-4 p-4 border-2 border-customComplementary w-full bg-customSections ">
             <EditCustomerInfo profileId={profile._id} />
           </div>
         </>

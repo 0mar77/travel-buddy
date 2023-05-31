@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
 
-import Auth from "../utils/auth";
+import Auth from '../utils/auth';
 
-import { ADD_VENDOR_INFO } from "../utils/mutations";
+import { ADD_VENDOR_INFO } from '../utils/mutations';
 
 const EditVendorInfo = ({ profileId }) => {
   const [info, setInfo] = useState({
-    location: "",
-    description: "",
+    location: '',
+    description: '',
   });
 
   const [updateInfo, { error }] = useMutation(ADD_VENDOR_INFO);
@@ -33,8 +33,8 @@ const EditVendorInfo = ({ profileId }) => {
       });
 
       setInfo({
-        location: "",
-        description: "",
+        location: '',
+        description: '',
       });
 
       window.location.reload();
@@ -44,8 +44,8 @@ const EditVendorInfo = ({ profileId }) => {
   };
 
   return (
-    <div>
-      <h4>Edit your info</h4>
+    <div className="bg-customSections p-2 ">
+      <h4 className="text-customPrimary">Edit your info</h4>
       <form
         className="flex-row justify-center justify-space-between-md align-center"
         onSubmit={handleFormSubmit}
@@ -72,7 +72,10 @@ const EditVendorInfo = ({ profileId }) => {
         </div>
 
         <div className="col-12 col-lg-3">
-          <button className="btn btn-info btn-block py-3" type="submit">
+          <button
+            className="btn btn-info btn-block py-3 bg-customComplementary border-2 border-customBody"
+            type="submit"
+          >
             Update your info
           </button>
         </div>

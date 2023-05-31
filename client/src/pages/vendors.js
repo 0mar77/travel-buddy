@@ -1,8 +1,8 @@
-import React from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { GET_ME, GET_VENDORS } from "../utils/queries";
-import { SAVE_SERVICE } from "../utils/mutations";
-import Auth from "../utils/auth";
+import React from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import { GET_ME, GET_VENDORS } from '../utils/queries';
+import { SAVE_SERVICE } from '../utils/mutations';
+import Auth from '../utils/auth';
 
 const VendorList = () => {
   const [saveService, { error }] = useMutation(SAVE_SERVICE);
@@ -40,14 +40,17 @@ const VendorList = () => {
   };
 
   return (
-    <div>
-      <h1>Vendors</h1>
+    <div className="bg-customBody h-screen p-2">
+      <h1 className="text-customPrimary text-center my-2">Vendors</h1>
       {vendors.map((vendor) => (
-        <div key={vendor._id}>
-          <h3>{vendor.name}</h3>
-          <p>Location: {vendor.location}</p>
-          <p>Description: {vendor.description}</p>
-          {userData.usertype === "Customer" && (
+        <div
+          className="border-2 border-customComplementary p-2 my-3 bg-customSections text-customText"
+          key={vendor._id}
+        >
+          <h3 className="text-customPrimary my-1">{vendor.name}</h3>
+          <p className="text-white my-1">Location: {vendor.location}</p>
+          <p className="text-white my-1">Description: {vendor.description}</p>
+          {userData.usertype === 'Customer' && (
             <>
               {vendor.services.map((service, index) => (
                 <div key={service._id}>
@@ -61,7 +64,7 @@ const VendorList = () => {
               ))}
             </>
           )}
-          {userData.usertype !== "Customer" && (
+          {userData.usertype !== 'Customer' && (
             <>
               {vendor.services.map((service, index) => (
                 <div key={service._id}>
