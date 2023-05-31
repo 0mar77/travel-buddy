@@ -19,7 +19,16 @@ const ServiceForm = ({ profileId }) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setService({ ...service, [name]: value });
+
+    setService((prevService) => ({
+      ...prevService,
+      [name]:
+        name === "price"
+          ? parseFloat(value)
+          : name === "duration"
+          ? parseInt(value)
+          : value,
+    }));
   };
 
   const handleFormSubmit = async (event) => {
@@ -30,6 +39,9 @@ const ServiceForm = ({ profileId }) => {
     if (!token) {
       return false;
     }
+
+    console.log(typeof service.price + service.price);
+    console.log(service);
 
     try {
       const data = await addService({
@@ -70,6 +82,7 @@ const ServiceForm = ({ profileId }) => {
         <div className="mb-3">
           <label className="form-label">Description of the service</label>
           <textarea
+            type="text"
             className="form-control"
             rows="3"
             name="description"
