@@ -15,7 +15,6 @@ const VendorInfo = ({ profileId }) => {
 
   const vendor = data.getVendorById;
 
-  // console.log(vendor);
 
   const handleDelete = (serviceId) => {
     try {
