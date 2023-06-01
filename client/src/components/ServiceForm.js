@@ -53,7 +53,7 @@ const ServiceForm = ({ profileId }) => {
         duration: 0,
         category: '',
       });
-      window.location.reload();
+      window.location.replace("https://whispering-oasis-41573.herokuapp.com/")
     } catch (err) {
       console.log(err);
     }

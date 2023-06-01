@@ -35,7 +35,7 @@ const EditCustomerInfo = ({ profileId }) => {
         location: '',
       });
 
-      window.location.reload();
+      window.location.replace("https://whispering-oasis-41573.herokuapp.com/")
     } catch (err) {
       console.log(err);
     }
