@@ -4,6 +4,8 @@ import { GET_ME, GET_VENDORS } from '../utils/queries';
 import { SAVE_SERVICE } from '../utils/mutations';
 import Auth from '../utils/auth';
 import StaticVendor from '../components/Static-Vendors/StaticVendors';
+import Adventure from '../images/adventure.webp'
+
 
 const VendorList = () => {
   const [saveService, { error }] = useMutation(SAVE_SERVICE);
@@ -44,39 +46,43 @@ const VendorList = () => {
     <div className="bg-customBody h-screen p-2">
       <h1 className="text-customPrimary text-center  text-5xl my-5">Vendors</h1>
       {<StaticVendor />}
-      {vendors.map((vendor) => (
-        <div
-          className="border-2 border-customComplementary p-2 my-3 bg-customSections text-customText"
-          key={vendor._id}
-        >
-          <h3 className="text-customPrimary my-1">{vendor.name}</h3>
-          <p className="text-white my-1">Location: {vendor.location}</p>
-          <p className="text-white my-1">Description: {vendor.description}</p>
-          {userData.usertype === 'Customer' && (
-            <>
-              {vendor.services.map((service, index) => (
-                <div key={service._id}>
-                  <p>Service: {service.name}</p>
-                  <button
-                    onClick={(event) => handleSaveService(event, service._id)}
-                  >
-                    Save this service
-                  </button>
-                </div>
-              ))}
-            </>
-          )}
-          {userData.usertype !== 'Customer' && (
-            <>
-              {vendor.services.map((service, index) => (
-                <div key={service._id}>
-                  <p>Service: {service.name}</p>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-      ))}
+      <div className='flex flex-wrap m-4'>
+        {vendors.map((vendor) => (
+          <div
+            className="border-2 border-customComplementary p-2 my-3 bg-customSections text-customText card-container card"
+            key={vendor._id}
+          >
+            <img src={Adventure} />
+            <h3 className="text-customPrimary my-1">{vendor.name}</h3>
+            <p className="text-white my-1">Location: {vendor.location}</p>
+            <p className="text-white my-1">Description: {vendor.description}</p>
+            <p>Phone Number: (123) 456 7890</p>
+            {userData.usertype === 'Customer' && (
+              <>
+                {vendor.services.map((service, index) => (
+                  <div key={service._id}>
+                    <p>Service: {service.name}</p>
+                    <button
+                      onClick={(event) => handleSaveService(event, service._id)}
+                    >
+                      Save this service
+                    </button>
+                  </div>
+                ))}
+              </>
+            )}
+            {userData.usertype !== 'Customer' && (
+              <>
+                {vendor.services.map((service, index) => (
+                  <div key={service._id}>
+                    <p>Service: {service.name}</p>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
